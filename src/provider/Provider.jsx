@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { auth } from './../firebase/firebase.config';
-import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
@@ -31,6 +31,11 @@ const Provider = ({ children }) => {
         return signOut(auth)
     }
 
+    const forgetPassWord = (email) => {
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    
     const UserLogin = (email, password) => {
         setloader(true)
         return signInWithEmailAndPassword(auth, email, password)
@@ -62,7 +67,8 @@ const Provider = ({ children }) => {
         loader,
         updateuserprofile,
         googleLogin,
-        githubLogin
+        githubLogin,
+        forgetPassWord,
 
     }
 

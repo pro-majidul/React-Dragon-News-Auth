@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/Provider";
 
 const Login = () => {
-    const { UserLogin } = useContext(AuthContext);
+    const { UserLogin ,forgetPassWord} = useContext(AuthContext);
     const location = useLocation();
+    const emailRef = useRef()
     const [error, setError] = useState({})
     const navigate = useNavigate()
     const handelLogin = (e) => {
@@ -23,6 +24,19 @@ const Login = () => {
             })
     }
 
+     const handelforgetpassword = () =>{
+        const email = emailRef.current.value;
+        if(!email){
+            alert('please provide a email address')
+        }else{
+            forgetPassWord(email)
+            .then(()=>{
+               alert('passrod sent to your email , please check your email')
+            }).catch(error =>{
+                console.log(error.code);
+            })
+        }
+     }
 
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -33,7 +47,7 @@ const Login = () => {
                         <label className="label">
                             <span className="label-text">Email</span>
                         </label>
-                        <input type="email" name="email" placeholder="email" className="input input-bordered" required />
+                        <input ref={emailRef} type="email" name="email" placeholder="email" className="input input-bordered" required />
                     </div>
                     <div className="form-control">
                         <label className="label">
@@ -47,7 +61,7 @@ const Login = () => {
                         </label>
                         }
                         <label className="label">
-                            <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                            <Link onClick={handelforgetpassword} className="label-text-alt link link-hover">Forgot password?</Link>
                         </label>
                     </div>
                     <div className="form-control mt-6">
