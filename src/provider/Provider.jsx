@@ -6,16 +6,19 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 export const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 const Provider = ({ children }) => {
-    const [users, setUsers] = useState(null)
+    const [users, setUsers] = useState(null);
+    const [loader , setloader] = useState(true)
     const CreateUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
     const logOutUser = () => {
+        setloader(true)
         return signOut(auth)
     }
 
     const UserLogin = (email, password) => {
+        setloader(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
@@ -24,6 +27,7 @@ const Provider = ({ children }) => {
         const unchanged = onAuthStateChanged(auth, currentUser => {
             if (currentUser) {
                 setUsers(currentUser)
+                setloader(false)
                 // console.log(' user login', currentUser);
             } else {
                 setUsers(null)
@@ -42,6 +46,7 @@ const Provider = ({ children }) => {
         logOutUser,
         UserLogin,
         setUsers,
+        loader
 
     }
 
