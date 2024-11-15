@@ -19,7 +19,7 @@ const Register = () => {
         const password = form.get('password');
         CreateUser(email, password)
             .then(result => {
-                console.log(result.user);
+                console.log(result);
                 updateuserprofile({ displayName: name, photoURL: photo })
                     .then(() => {
                         navigate('/')
@@ -29,12 +29,10 @@ const Register = () => {
                     })
             })
             .catch(error => {
-                console.log(error.code);
                 setWrong({ ...wrong, password: error.code })
                 return
 
             })
-        console.log({ name, email, password, photo });
     }
 
     return (

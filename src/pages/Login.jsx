@@ -21,7 +21,6 @@ const Login = () => {
                 setError({ ...error, login: err.code} );
                 return
             })
-        console.log(email, password);
     }
 
 
