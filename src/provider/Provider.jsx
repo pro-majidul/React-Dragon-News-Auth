@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { auth } from './../firebase/firebase.config';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
@@ -10,6 +10,11 @@ const Provider = ({ children }) => {
     const [loader , setloader] = useState(true)
     const CreateUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
+    }
+
+
+    const updateuserprofile =(updateData)=>{
+        return updateProfile(auth.currentUser , updateData)
     }
 
     const logOutUser = () => {
@@ -47,7 +52,8 @@ const Provider = ({ children }) => {
         logOutUser,
         UserLogin,
         setUsers,
-        loader
+        loader,
+        updateuserprofile
 
     }
 
