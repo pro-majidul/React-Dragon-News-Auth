@@ -1,22 +1,30 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../provider/Provider";
 
 const Register = () => {
     const { CreateUser } = useContext(AuthContext)
+    const [error, setError] = useState({});
+    const [wrong , setWrong] = useState({})
     const handelRegister = (e) => {
         e.preventDefault();
         const form = new FormData(e.target);
         const name = form.get('name');
+        if(name.length < 5){
+           return setError({ ...error , name : 'name must be 6 charecter'})
+        }
         const photo = form.get('photo');
         const email = form.get('email');
         const password = form.get('password');
-        CreateUser(email , password)
+        CreateUser(email, password)
             .then(result => {
                 console.log(result.user);
             })
             .catch(error => {
-                console.log(error.message);
+               console.log(error.code);
+               setWrong({ ...wrong , password: error.code})
+               return 
+               
             })
         console.log({ name, email, password, photo });
     }
@@ -32,6 +40,11 @@ const Register = () => {
                         </label>
                         <input type="text" name='name' placeholder="name" className="input input-bordered" required />
                     </div>
+                    {
+                        error.name &&  <label className="label">
+                        <span className="label-text text-red-500">{error.name}</span>
+                    </label> 
+                    }
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Photo-URL</span>
@@ -44,12 +57,22 @@ const Register = () => {
                         </label>
                         <input name='email' type="email" placeholder="email" className="input input-bordered" required />
                     </div>
+                    {
+                        error.signup &&  <label className="label">
+                        <span className="label-text">Invalid UserName , Email or Password</span>
+                    </label>
+                    }
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Password</span>
                         </label>
                         <input type="password" name="password" placeholder="password" className="input input-bordered" required />
                     </div>
+                    {
+                        wrong.password && <label className="label">
+                        <span className="label-text">{wrong.password}</span>
+                    </label>
+                    }
                     <div className="form-control mt-6">
                         <button className="btn btn-neutral">Register</button>
                     </div>

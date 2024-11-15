@@ -1,24 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/Provider";
 
 const Login = () => {
-    const {UserLogin} = useContext(AuthContext);
+    const { UserLogin } = useContext(AuthContext);
     const location = useLocation();
+    const [error, setError] = useState({})
     const navigate = useNavigate()
-    const handelLogin = (e) =>{
+    const handelLogin = (e) => {
         e.preventDefault();
         const form = new FormData(e.target);
         const email = form.get('email');
         const password = form.get('password')
         UserLogin(email, password)
-        .then(result => {
-            console.log(result);
-           navigate(location?.state ? location.state : '/')
-        })
-        .catch(error =>{
-            console.log(error.message);
-        })
+            .then(result => {
+                console.log(result);
+                navigate(location?.state ? location.state : '/')
+            })
+            .catch(err => {
+                setError({ ...error, login: err.code} );
+                return
+            })
         console.log(email, password);
     }
 
@@ -39,6 +41,12 @@ const Login = () => {
                             <span className="label-text">Password</span>
                         </label>
                         <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+
+                        {
+                            error.login && <label className="label">
+                            <span className="text-red-500 label-text">Invalid Email or password</span>
+                        </label>
+                        }
                         <label className="label">
                             <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                         </label>
