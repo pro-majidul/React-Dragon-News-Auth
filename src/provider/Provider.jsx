@@ -1,20 +1,29 @@
 import { createContext, useEffect, useState } from "react";
 import { auth } from './../firebase/firebase.config';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 const Provider = ({ children }) => {
     const [users, setUsers] = useState(null);
-    const [loader , setloader] = useState(true)
+    const [loader, setloader] = useState(true)
     const CreateUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
+    const googleProvider = new GoogleAuthProvider();
+    const googleLogin = () => {
+        return signInWithPopup(auth, googleProvider)
+    }
 
-    const updateuserprofile =(updateData)=>{
-        return updateProfile(auth.currentUser , updateData)
+    const githubProvider = new GithubAuthProvider();
+    const githubLogin = () => {
+        return signInWithPopup(auth, githubProvider)
+    }
+
+    const updateuserprofile = (updateData) => {
+        return updateProfile(auth.currentUser, updateData)
     }
 
     const logOutUser = () => {
@@ -51,7 +60,9 @@ const Provider = ({ children }) => {
         UserLogin,
         setUsers,
         loader,
-        updateuserprofile
+        updateuserprofile,
+        googleLogin,
+        githubLogin
 
     }
 
