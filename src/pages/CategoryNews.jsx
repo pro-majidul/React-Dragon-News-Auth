@@ -15,7 +15,7 @@ const CategoryNews = () => {
           <NewsCard key={singleNews._id} news={singleNews}></NewsCard>
         ))}
       </div>
-    </div>
+    </div> 
   );
 };
 
