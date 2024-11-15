@@ -6,7 +6,6 @@ import { FaArrowLeft } from "react-icons/fa6";
 const NewsDetails = () => {
     const data = useLoaderData();
     const news = (data.data[0]);
-    console.log(news);
     return (
         <div>
 

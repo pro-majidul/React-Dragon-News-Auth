@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { AuthContext } from '../provider/Provider';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
 const PrivateRoutes = ({ children }) => {
     const { users, loader } = useContext(AuthContext);
+    const location = useLocation();
 
     if (loader) {
         return <div className='min-h-screen flex items-center justify-center'>
@@ -17,7 +18,7 @@ const PrivateRoutes = ({ children }) => {
 
     return (
         <div>
-            <Navigate to='/auth/login'></Navigate>
+            <Navigate state={location.pathname} to='/auth/login'></Navigate>
 
         </div>
     );

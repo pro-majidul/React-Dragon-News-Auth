@@ -31,6 +31,7 @@ const Provider = ({ children }) => {
                 // console.log(' user login', currentUser);
             } else {
                 setUsers(null)
+                setloader(false)
             }
         })
 
